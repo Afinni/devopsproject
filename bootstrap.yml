@@ -1,0 +1,103 @@
+---
+- hosts: Websites
+  become: true
+  pre_tasks:
+
+   - name: This pings the servers
+     ping:
+
+   - name: This updates and upgrades the Ubuntu servers
+     apt:
+       update_cache: true
+       state: present
+       upgrade: dist 
+
+   - name: This installs programs
+     tags: install
+     apt:
+       name:
+         - nginx
+         - unzip
+         - wget
+         - plocate
+         - net-tools
+         - ufw
+
+   - name: This creates a directory
+     tags: directory
+     file:
+        path: /var/www/website/
+        state: directory
+        owner: root
+        group: root
+        mode: u+rwx,g+rwx,o+rwx
+
+   - name: This unzips directory
+     tags: directory
+     unarchive:
+        src: https://www.free-css.com/assets/files/free-css-templates/download/page296/finexo.zip
+        dest: /var/www/website/
+        remote_src: yes
+
+   - name: This creates a file
+     tags: remove
+     file:
+        path: /etc/nginx/sites-available/demo
+        state: absent
+        owner: root
+        group: root
+
+   - name: This copies content
+     tags: test
+     copy:
+        src: ~/ansibledemo/demo
+        dest: /etc/nginx/sites-available/
+   
+   - name: This removes the old default config from sites enable
+     tags: test
+     file:
+        path: /etc/nginx/sites-enabled/demo
+        state: absent
+   
+   - name: This enables the new demo configuaion file options
+     tags: test
+     file:
+        src: /etc/nginx/sites-available/demo
+        dest: /etc/nginx/sites-enabled/demo
+        state: link
+        owner: root
+        group: root
+
+
+   - name: This reloads the nginx confiuration
+     tags: test
+     service:
+         name: nginx
+         state: reloaded
+        
+
+   - name: This restarts the nginx service
+     tags: old
+     service:
+         name: nginx
+         state: restart
+         enabled: yes
+
+   - name: allow UFW service
+     tags: ufw
+     ufw:
+       rule: allow
+       name: OpenSSH
+
+   - name: allow the Full Nginx service
+     tags: ufw1
+     ufw:
+       rule: allow
+       name: Nginx Full 
+
+   - name: enable the ufw service
+     tags: ufw
+     ufw:
+       state: enabled
+       policy: allow
+
