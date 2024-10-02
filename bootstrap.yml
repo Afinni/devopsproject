@@ -12,7 +12,7 @@
      apt:
        update_cache: true
        state: present
-       upgrade: dist 
+       upgrade: dist
 
    - name: This installs programs
      tags: install
@@ -34,7 +34,7 @@
         group: root
         mode: u+rwx,g+rwx,o+rwx
 
-   - name: This unzips directory
+   - name: This unzip directory
      tags: directory
      unarchive:
         src: https://www.free-css.com/assets/files/free-css-templates/download/page296/finexo.zip
