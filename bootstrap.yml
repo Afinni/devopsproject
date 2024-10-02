@@ -4,9 +4,11 @@
   pre_tasks:
 
    - name: This pings the servers
+     tags: bootstrap
      ping:
 
    - name: This updates and upgrades the Ubuntu servers
+     tags: bootstrap
      apt:
        update_cache: true
        state: present
@@ -39,28 +41,20 @@
         dest: /var/www/website/
         remote_src: yes
 
-   - name: This creates a file
-     tags: remove
-     file:
-        path: /etc/nginx/sites-available/demo
-        state: absent
-        owner: root
-        group: root
-
    - name: This copies content
-     tags: test
+     tags: nginx
      copy:
         src: ~/ansibledemo/demo
         dest: /etc/nginx/sites-available/
    
    - name: This removes the old default config from sites enable
-     tags: test
+     tags: nginx
      file:
         path: /etc/nginx/sites-enabled/demo
         state: absent
    
    - name: This enables the new demo configuaion file options
-     tags: test
+     tags: nginx
      file:
         src: /etc/nginx/sites-available/demo
         dest: /etc/nginx/sites-enabled/demo
@@ -70,33 +64,33 @@
 
 
    - name: This reloads the nginx confiuration
-     tags: test
+     tags: nginx
      service:
          name: nginx
          state: reloaded
         
 
    - name: This restarts the nginx service
-     tags: old
+     tags: nginx
      service:
          name: nginx
          state: restart
          enabled: yes
 
    - name: allow UFW service
-     tags: ufw
+     tags: nginx
      ufw:
        rule: allow
        name: OpenSSH
 
    - name: allow the Full Nginx service
-     tags: ufw1
+     tags: nginx
      ufw:
        rule: allow
        name: Nginx Full 
 
    - name: enable the ufw service
-     tags: ufw
+     tags: nginx
      ufw:
        state: enabled
        policy: allow
