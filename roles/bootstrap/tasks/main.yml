@@ -1,0 +1,10 @@
+- name: This pings the servers
+  tags: bootstrap
+  ping:
+
+- name: This updates and upgrades the Ubuntu servers
+  tags: bootstrap
+  apt:
+    update_cache: true
+    state: present
+    upgrade: dist

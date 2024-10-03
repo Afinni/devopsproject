@@ -1,0 +1,10 @@
+- name: This installs programs
+  tags: install
+  apt:
+    name:
+        - nginx
+        - unzip
+        - wget
+        - plocate
+        - net-tools
+        - ufw
