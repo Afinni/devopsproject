@@ -1,4 +1,5 @@
 ---
+
 - hosts: Websites
   become: true
   pre_tasks:
@@ -50,7 +51,7 @@
    - name: This removes the old default config from sites enable
      tags: nginx
      file:
-        path: /etc/nginx/sites-enabled/demo
+        path: /etc/nginx/sites-enabled/default
         state: absent
    
    - name: This enables the new demo configuaion file options
@@ -68,13 +69,13 @@
      service:
          name: nginx
          state: reloaded
-        
+
 
    - name: This restarts the nginx service
      tags: nginx
      service:
          name: nginx
-         state: restart
+         state: started
          enabled: yes
 
    - name: allow UFW service
