@@ -1,7 +1,0 @@
----
-- hosts: Websites
-  become: true
-  roles:
-     - bootstrap
-     - setup
-     - nginx_setup

@@ -34,36 +34,19 @@
       state: link
       owner: root
       group: root
+  notify: nginx_restart_service
 
-
-- name: This reloads the nginx confiuration
-  tags: nginx
-  service:
-      name: nginx
-      state: reloaded
-
-
-- name: This restarts the nginx service
-  tags: nginx
-  service:
-      name: nginx
-      state: started
-      enabled: yes
-
-- name: allow UFW service
+- name: allow UFW app list
   tags: nginx
   ufw:
       rule: allow
-      name: OpenSSH
-
-- name: allow the Full Nginx service
-  tags: nginx
-  ufw:
-      rule: allow
-      name: Nginx Full 
+      name:
+          - OpenSSH
+          - Nginx Full
 
 - name: enable the ufw service
   tags: nginx
   ufw:
       state: enabled
       policy: allow
+  notify: reboot_server

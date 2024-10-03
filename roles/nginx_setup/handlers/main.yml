@@ -1,0 +1,16 @@
+---
+
+- name: nginx_restart_service
+  service:
+        name: nginx
+        state: reloaded
+
+
+- name: reboot_server
+  stat:
+        path: /var/run/reboot-required
+        register: reboot_required_now
+
+- name: rebooting system
+  apt:
+  when: reboot_required_now.stat.exists == true
